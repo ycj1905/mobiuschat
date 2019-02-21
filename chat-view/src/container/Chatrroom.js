@@ -17,7 +17,7 @@ const handleRegister = () => {
 const handleLogin = () => {
     axios.post('http://localhost:8080/api/user/login', {
         name: 'Matt',
-        pswd: 'pswdpswdd',
+        pswd: 'pswdpswd',
         gender: 'gender',
         email: 'ycj1665@gmail.com',
         city: 'Taipei',
