@@ -1,17 +1,15 @@
-import React, { Component, Suspense } from 'react';
+import React, { Component, Suspense, useEffect } from 'react';
 import './App.css';
-import io from 'socket.io-client';
-import Header from '../component/Header';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import Layout from '../hoc/Layout';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Home from './Home';
 import Chatroom from './Chatrroom';
+import axios from 'axios';
 
-const socket = require('socket.io-client')('http://localhost:8080');
+// const socket = require('socket.io-client')('http://localhost:8080');
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
@@ -23,6 +21,12 @@ const styles = theme => ({
 
 const App = (props) => {
   const { classes } = props;
+
+  // useEffect(() => {
+  //   axios.get('http://localhost:8080/test').then(
+  //     (s) => console.log(s)
+  //   )
+  // }, []);
 
   let routes = (
     <Switch>
@@ -39,15 +43,6 @@ const App = (props) => {
       <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
     </Layout>
   )
-  // return (
-  //   <div>
-  //     {/* <Header name="hi" /> */}
-  //     <div>hello</div>
-  //     <Button variant="contained" className={classes.button}>
-  //       Default
-  //     </Button>
-  //   </div>
-  // )
 }
 App.propTypes = {
   classes: PropTypes.object.isRequired,
