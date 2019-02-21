@@ -4,6 +4,16 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const FacebookToken = require('../secret/facebookToken');
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then(user => {
+    done(null, user);
+  });
+});
+
 passport.use(new FacebookStrategy({
     clientID: FacebookToken.clientID,
     clientSecret: FacebookToken.clientSecret,
