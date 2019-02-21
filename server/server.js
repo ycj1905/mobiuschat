@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
   //   }
   // });
 
-  // socket.on('disconnect', () => {
+  socket.on('disconnect', () => {
   //   var user = users.removeUser(socket.id);
 
   //   if (user) {
