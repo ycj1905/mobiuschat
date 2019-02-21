@@ -13,14 +13,15 @@ const styles = theme => ({
   },
   main: {
       display: 'flex',
+      height: '100vh'
   },
   left: {
-      flex: 1,
+      flex: 3,
       backgroundColor: 'red'
   },
   right: {
-      flex: 2,
-      backgroundColor: 'blue'
+      flex: 1,
+    //   backgroundColor: 'blue'
   }
 });
 
@@ -40,11 +41,11 @@ const Layout = (props) => {
                 closed={sideDrawerClosedHandler}
             /> */}
             <Header></Header>
-            <div className={classes.main}>
+            <div className={classes.main}>          
+                <main className={classes.left}>{props.children}</main>
                 <div className={classes.right}>
                     <Friends></Friends>
-                </div>            
-                <main className={classes.left}>{props.children}</main>
+                </div>
             </div>
         </Aux>
     );

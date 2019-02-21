@@ -36,7 +36,7 @@ const Header = (props) => {
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" color="inherit" className={classes.grow}>
-                    News
+                    MobiusChat
                 </Typography>
                 {/* <Button color="inherit">Login</Button> */}
                 <Button color="inherit"><Link to="/login">Login</Link></Button>
