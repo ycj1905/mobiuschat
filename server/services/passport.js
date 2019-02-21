@@ -26,6 +26,8 @@ passport.use(new FacebookStrategy({
     // console.log(accessToken);
 
     const existingUser = await User.findOne({ facebookId: profile.id });
+    console.log('existingUser');
+    console.log(existingUser)
     if (existingUser) {
       return done(null, existingUser);
     }
