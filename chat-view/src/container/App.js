@@ -11,7 +11,7 @@ import Login from './Login';
 import Home from './Home';
 import Chatroom from './Chatrroom';
 
-// const socket = require('socket.io-client')('http://localhost:8080');
+const socket = require('socket.io-client')('http://localhost:8080');
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
