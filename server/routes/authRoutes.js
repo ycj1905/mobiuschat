@@ -1,4 +1,6 @@
 const passport = require('passport');
+const mongoose = require('mongoose');
+const User = mongoose.model('users');
 module.exports = (app) => {
     app.get('/auth/facebook', passport.authenticate('facebook'));
     // app.get('/auth/facebook', passport.authenticate('facebook',  { scope: ['manage_pages'] }));
@@ -16,7 +18,6 @@ module.exports = (app) => {
         // res.send(req.user);
         // res.redirect('http://localhost:3000/home')
     });
-
 
     // app.get('/api/current_user', (req, res) => {
     //     res.send(req.user);
