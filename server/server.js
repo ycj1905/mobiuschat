@@ -2,8 +2,11 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const passport = require('passport');
+var cors = require('cors')
+var FacebookStrategy = require('passport-facebook').Strategy;
 
-const FacebookToken = require('./secret/facebookTOken');
+const FacebookToken = require('./secret/facebookToken');
 // Utils
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -11,22 +14,40 @@ const {Users} = require('./utils/users');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 8080;
-var app = express();
-// app.get('/', (req, res) => {
-//   res.send('hello')
-//   // Todo.find().then((todos) => {
-//   //   res.send({todos});
-//   // }, (e) => {
-//   //   res.status(400).send(e);
-//   // });
-// });
 
+passport.use(new FacebookStrategy({
+    clientID: FacebookToken.clientID,
+    clientSecret: FacebookToken.clientSecret,
+    // callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: FacebookToken.callbackURL
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(accessToken);
+    // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+  }
+));
+
+var app = express();
+app.use(cors())
 
 var server = http.createServer(app);
 var io = socketIO(server);
 // var users = new Users();
 
 app.use(express.static(publicPath));
+app.get('/auth/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+});
+
+
 
 io.on('connection', (socket) => {
   console.log('New user connected: ', socket);
