@@ -1,8 +1,33 @@
 import React from 'react';
 import Aux from './Aux';
 import Header from '../component/Header';
+import Friends from '../component/Friends';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  input: {
+    display: 'none',
+  },
+  main: {
+      display: 'flex',
+  },
+  left: {
+      flex: 1,
+      backgroundColor: 'red'
+  },
+  right: {
+      flex: 2,
+      backgroundColor: 'blue'
+  }
+});
+
 
 const Layout = (props) => {
+    const { classes } = props;
+    
     return (
         <Aux>
             {/* <Toolbar
@@ -15,9 +40,14 @@ const Layout = (props) => {
                 closed={sideDrawerClosedHandler}
             /> */}
             <Header></Header>
-            <main>{props.children}</main>
+            <div className={classes.main}>
+                <div className={classes.right}>
+                    <Friends></Friends>
+                </div>            
+                <main className={classes.left}>{props.children}</main>
+            </div>
         </Aux>
     );
 }
 
-export default Layout;
+export default withStyles(styles)(Layout);
