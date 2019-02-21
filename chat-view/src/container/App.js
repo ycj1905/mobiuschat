@@ -9,6 +9,7 @@ import Layout from '../hoc/Layout';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Home from './Home';
+import Chatroom from './Chatrroom';
 
 // const socket = require('socket.io-client')('http://localhost:8080');
 const styles = theme => ({
@@ -28,7 +29,8 @@ const App = (props) => {
       {/* <Route path="/auth" render={props => <Auth {...props} />} /> */}
       <Route path="/login" exact component={Login} />
       <Route path="/home" exact component={Home} />
-      <Redirect to="/" />
+      <Route path="/chatroom" exact component={Chatroom} />
+      <Redirect to="/chatroom" />
     </Switch>
   );
 
