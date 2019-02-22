@@ -3,6 +3,7 @@ const User = mongoose.model('users');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+const secret = 'my_secret_key';
 
 module.exports = (app) => {
     app.post('/api/user/register', async (req, res) => {
@@ -24,6 +25,8 @@ module.exports = (app) => {
     })
 
     app.post('/api/user/login', async (req, res) => {
+        console.log('header');
+        console.log(req.header);
         const foundUser = await User.findOne({ facebookId: req.body.facebookId });
         const reuslt  = await bcrypt.compare(req.body.pswd, foundUser.pswd);
         console.log('reuslt');
@@ -36,25 +39,43 @@ module.exports = (app) => {
             const token = await jwt.sign({
                 payload,
                 exp: Math.floor(Date.now() / 1000) + (60 * 15)},
-                'my_secret_key');
+                secret);
             console.log('token');
             console.log(token);
         }
-        // then((res) => {
-        //     if(res) {
-        //         const payload = {
-        //             user_name: foundUser.name,
-        //             user_email: foundUser.email
-        //         };
-        //         const token = jwt.sign(
-        //             {
-        //                 payload,
-        //                 exp: Math.floor(Date.now() / 1000) + (60 * 15)
-        //             },
-        //             'my_secret_key');
-        //     }
-        //     console.log('res'); // true
-        //     console.log(res); // true
-        // });
     })
+
+    // function ensureToken(req, res, next) {
+    //     const bearerHeader = req.headers['authorization'];
+    //     if(typeof bearerHeader !== 'undefined') {
+    //         const bearer = bearerHeader.split(' ');
+    //         const bearerToken = bearer[2];
+    //         req.token = bearerToken;
+    //         next();
+    //     } else {
+    //         res.sendStatus(403);
+    //     }
+    // }
+
+    // app.get('/api/protected', ensureToken, (req, res) => {
+    //     console.log('req.token2')
+    //     console.log(req.token)
+    //     jwt.verify(req.token, secret, (err, data) => {
+    //         if(err) {
+    //             res.sendStatus(403)
+    //         } else {
+    //             res.json({
+    //                 text: 'this is protected',
+    //                 data: data
+    //             })
+    //         }
+    //     })
+    // })
+    // app.post('/api/test/login', (req, res) => {
+    //     const user = {id: 3};
+    //     const token = jwt.sign({user}, secret);
+    //     res.json({
+    //         token
+    //     })
+    // })
 }
