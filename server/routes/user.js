@@ -41,41 +41,49 @@ module.exports = (app) => {
                 exp: Math.floor(Date.now() / 1000) + (60 * 15)},
                 secret);
             console.log('token');
-            console.log(token);
+            res.send({
+                token,
+                message: 'You got the token'
+            })
+        }else {
+            res.sendStatus(403);
+            // res.send({message: ''})
         }
     })
 
-    // function ensureToken(req, res, next) {
-    //     const bearerHeader = req.headers['authorization'];
-    //     if(typeof bearerHeader !== 'undefined') {
-    //         const bearer = bearerHeader.split(' ');
-    //         const bearerToken = bearer[2];
-    //         req.token = bearerToken;
-    //         next();
-    //     } else {
-    //         res.sendStatus(403);
-    //     }
-    // }
+    function ensureToken(req, res, next) {
+        const bearerHeader = req.headers['authorization'];
+        if(typeof bearerHeader !== 'undefined') {
+            const bearer = bearerHeader.split(' ');
+            const bearerToken = bearer[1];
+            console.log('bearerToken')
+            console.log(bearerToken)
+            req.token = bearerToken;
+            next();
+        } else {
+            res.sendStatus(403);
+        }
+    }
 
-    // app.get('/api/protected', ensureToken, (req, res) => {
-    //     console.log('req.token2')
-    //     console.log(req.token)
-    //     jwt.verify(req.token, secret, (err, data) => {
-    //         if(err) {
-    //             res.sendStatus(403)
-    //         } else {
-    //             res.json({
-    //                 text: 'this is protected',
-    //                 data: data
-    //             })
-    //         }
-    //     })
-    // })
-    // app.post('/api/test/login', (req, res) => {
-    //     const user = {id: 3};
-    //     const token = jwt.sign({user}, secret);
-    //     res.json({
-    //         token
-    //     })
-    // })
+    app.get('/api/protected', ensureToken, (req, res) => {
+        console.log('req.token2')
+        console.log(req.token)
+        jwt.verify(req.token, secret, (err, data) => {
+            if(err) {
+                res.sendStatus(403)
+            } else {
+                res.json({
+                    text: 'this is protected',
+                    data: data
+                })
+            }
+        })
+    })
+    app.post('/api/test/login', (req, res) => {
+        const user = {id: 3};
+        const token = jwt.sign({user}, secret);
+        res.json({
+            token
+        })
+    })
 }
