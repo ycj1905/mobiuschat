@@ -1,16 +1,17 @@
-const path = require('path');
 const http = require('http');
 const express = require('express');
 const mongoose = require('mongoose');
-const socketIO = require('socket.io');
 // const cookieSession = require('cookie-session');
-const cors = require('cors')
-const passport = require('passport');
 const bodyParser = require('body-parser');
+
+require('./models/User'); 
+
+const socketIO = require('socket.io');
+const passport = require('passport');
+const cors = require('cors')
 require('./services/passport');
 
 const port = process.env.PORT || 8080;
-require('./models/User'); 
 mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true});
 
 const app = express();
@@ -22,7 +23,7 @@ app.use(bodyParser.json());
 //     keys: ['123d4']
 //   })
 // );
-// app.use(passport.initialize());
+app.use(passport.initialize());
 // app.use(passport.session());
 
 const server = http.createServer(app);
