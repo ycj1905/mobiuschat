@@ -1,16 +1,30 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const userSchmea = new Schema({
-    facebookId: String,
-    // credits: { type: Number, default: 0 }
+const facebookSchema = new Schema({
+    kind: {type: String, default: 'facebook'},
+    id: String
 })
-// const userSchmea = new Schema({
-//     name: String,
-//     pswd: String,
-//     gender: String,
-//     email: String,
-//     city: String
+
+// const googleSchema = new Schema({
+//     kind: {type: String, default: 'google'},
 // })
 
-mongoose.model('users', userSchmea);
+const localSchema = new Schema({
+    kind: {type: String, default: 'local'},
+    username: String,
+    passwor: String
+})
+
+const userScehmea = new Schema({
+    name: String,
+    email: String,
+    gender: String,
+    accounts: [
+        facebookSchema,
+        localSchema
+    ]
+})
+
+
+mongoose.model('users', userScehmea);

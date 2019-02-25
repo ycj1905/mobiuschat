@@ -2,7 +2,7 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('users');
 module.exports = (app) => {
-    app.get('/auth/facebook', passport.authenticate('facebook'));
+    app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
     // app.get('/auth/facebook', passport.authenticate('facebook',  { scope: ['manage_pages'] }));
     // app.get('/auth/facebook', passport.authenticate('facebook',  { scope: ['user_friends'] }));
     app.get('/auth/facebook/callback',
