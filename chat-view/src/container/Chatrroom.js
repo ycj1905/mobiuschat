@@ -3,10 +3,10 @@ import axios from 'axios';
 
 const handleRegister = () => {
     axios.post('http://localhost:8080/api/user/register', {
-        name: 'Matt',
+        username: 'Matt',
         pswd: 'pswdpswd',
-        gender: 'gender',
-        email: 'ycj1665@gmail.com',
+        gender: 'man',
+        email: 'ycj1666@gmail.com',
         city: 'Taipei',
 
     }).then(

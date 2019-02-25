@@ -7,30 +7,34 @@ const secret = 'my_secret_key';
 
 module.exports = (app) => {
     app.post('/api/user/register', async (req, res) => {
-        const existingUser = await User.findOne({ facebookId: req.body.facebookId });
+        // const existingUser = await User.findOne({ facebookId: req.body.facebookId });
+        const existingUser = await User.findOne({'accounts.kind': 'local', 'accounts.username': req.body.username });
 
+        console.log('existingUser');
+        console.log(existingUser);
         if (existingUser) {
             res.send({message: 'user has created !'});
             return ;
         }
         const hashedPswd = bcrypt.hashSync(req.body.pswd, saltRounds);
+        
         const user = await new User({
-            name: req.body.name,
-            pswd: hashedPswd,
-            gender: req.body.gender,
-            email: req.body.email,
-            city: req.body.city,
+            name: '',
+            email: '',
+            gender: '',
+            city: '',
+            accounts: {
+                kind: 'local',
+                username: req.body.username,
+                password: hashedPswd
+            }
         }).save();
         res.send(user);
     })
 
     app.post('/api/user/login', async (req, res) => {
-        console.log('header');
-        console.log(req.header);
         const foundUser = await User.findOne({ facebookId: req.body.facebookId });
         const reuslt  = await bcrypt.compare(req.body.pswd, foundUser.pswd);
-        console.log('reuslt');
-        console.log(reuslt);
         if(reuslt) {
             const payload = {
                 user_name: foundUser.name,

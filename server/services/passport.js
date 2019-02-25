@@ -23,7 +23,7 @@ passport.use(new FacebookStrategy({
     profileFields: ['id', 'emails', 'name']
   },
   async (accessToken, refreshToken, profile, done) => {
-    const existingUser = await User.findOne({'accounts.kind': 'facebook', 'accounts.kind': profile.id });
+    const existingUser = await User.findOne({'accounts.kind': 'facebook', 'accounts.facebookId': profile.id});
     if (existingUser) {
       return done(null, existingUser);
     }
@@ -31,10 +31,11 @@ passport.use(new FacebookStrategy({
     const user = await new User({
       name: '',
       email: profile.emails[0].value,
-      gender: 'man',
+      gender: '',
+      city: '',
       accounts: {
         kind: 'facebook',
-        id: profile.id
+        facebookId: profile.id
       }
     }).save();
 
